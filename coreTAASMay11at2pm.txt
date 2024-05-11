@@ -1,0 +1,149 @@
+
+!
+version 12.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname COREtaas22
+!
+boot-start-marker
+boot-end-marker
+!
+no logging console
+enable secret 5 $1$XTOo$s8AZ6FAmek2Fz9Yo2gOaG1
+!
+!
+!
+no aaa new-model
+system mtu routing 1500
+ip routing
+no ip domain-lookup
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-890110592
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-890110592
+ revocation-check none
+ rsakeypair TP-self-signed-890110592
+!
+!
+crypto pki certificate chain TP-self-signed-890110592
+ certificate self-signed 01
+  30820241 308201AA A0030201 02020101 300D0609 2A864886 F70D0101 04050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 38393031 31303539 32301E17 0D393330 33303130 30303130 
+  385A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3839 30313130 
+  35393230 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  DBC8F0E8 B2FE29FB 9A136796 B0B86464 7804BDD3 534D2E24 12F457F9 6F234BD5 
+  BD066DDF 008722F6 A1A3A7B1 AA667D89 25F03A5E 2595CAD7 2B61BFCC 5293978E 
+  FD18426C 62077CE5 C38C00A3 978F1FE5 4CE119B9 28EB5365 557AB227 F59BDD62 
+  0A2810A4 CCBB6D3B 4A178B74 344A9C49 CE541741 825407BF 61D33117 C0E33723 
+  02030100 01A36B30 69300F06 03551D13 0101FF04 05300301 01FF3016 0603551D 
+  11040F30 0D820B43 6F726554 61617332 322E301F 0603551D 23041830 16801492 
+  7F74FB75 E59FEE5D 4726DFE6 D822D937 2FCC3C30 1D060355 1D0E0416 0414927F 
+  74FB75E5 9FEE5D47 26DFE6D8 22D9372F CC3C300D 06092A86 4886F70D 01010405 
+  00038181 00B45B28 F5F76420 860C4C8E 1E3BAA97 7C3B1E0A 853C52F5 4D36BBE5 
+  89A4A656 27BC15FE AB60C870 5D4918B0 CC3DB292 31E97A91 5B8A5970 C3B66605 
+  7265D853 D40465EB 9259FDFD 39EC987B 56C565DC 6B808C44 5A66AE16 568CA2B0 
+  7937996B 1344CEC7 2F9C29C0 D9DBA4EA AAA541CE 5E445F68 61B783B5 40AA0AE5 
+  A11F30E5 C4
+  quit
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/1
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/11
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/12
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface GigabitEthernet0/1
+ no switchport
+ ip address 201.0.0.22 255.255.255.0
+!
+interface Vlan1
+ description MGMTDATA
+ ip address 10.22.1.2 255.255.255.0
+ standby 1 ip 10.22.1.6
+ standby 1 preempt
+!
+interface Vlan10
+ description WIRELESS
+ ip address 10.22.10.2 255.255.255.0
+!
+interface Vlan50
+ description IPCCTV
+ ip address 10.22.50.2 255.255.255.0
+!
+interface Vlan100
+ description VOICEVLAN
+ ip address 10.22.100.2 255.255.255.0
+!
+router ospf 1
+ router-id 10.22.1.2
+ log-adjacency-changes
+ network 10.22.0.0 0.0.255.255 area 22
+!
+ip classless
+ip http server
+ip http secure-server
+!
+!
+vstack
+!
+line con 0
+ exec-timeout 0 0
+ password 7 051B071C32
+ login
+line vty 0 4
+ exec-timeout 0 0
+ password 7 15020A1F17
+ login
+line vty 5 14
+ exec-timeout 0 0
+ password 7 15020A1F17
+ login
+line vty 15
+ login
+!
+end

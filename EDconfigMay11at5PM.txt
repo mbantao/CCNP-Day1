@@ -1,0 +1,188 @@
+
+!
+! Last configuration change at 07:48:10 UTC Sat May 11 2024
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+!
+hostname EDGE22
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+no logging console
+enable secret 5 $1$hIC4$GEB94kvw67F5f7Qb63CYd0
+!
+no aaa new-model
+!
+no ip domain lookup
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+voice-card 0/1
+ no watchdog
+!
+license udi pid ISR4321/K9 sn FDO21420530
+license accept end user agreement
+license boot suite AdvUCSuiteK9
+license boot level securityk9
+no license smart enable
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+!
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ description VIRTUALIP
+ ip address 22.0.0.1 255.255.255.255
+!
+interface GigabitEthernet0/0/0
+ description INSIDE
+ ip address 10.22.22.1 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ description OUTSIDE
+ ip address 200.0.0.22 255.255.255.0
+ negotiation auto
+!
+interface Service-Engine0/1/0
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ negotiation auto
+!
+router ospf 1
+ network 10.22.22.0 0.0.0.255 area 22
+ network 22.0.0.1 0.0.0.0 area 0
+ network 200.0.0.0 0.0.0.255 area 0
+!
+ip forward-protocol nd
+no ip http server
+ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+voice-port 0/1/0
+!
+voice-port 0/1/1
+!
+voice-port 0/1/2
+!
+voice-port 0/1/3
+!
+voice-port 0/1/4
+!
+voice-port 0/1/5
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ password 7 08314D5D1A
+ login
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 0 0
+ password 7 1315160118
+ login
+line vty 5 14
+ exec-timeout 0 0
+ password 7 1315160118
+ login
+!
+!
+!
+!
+!
+!
+end
